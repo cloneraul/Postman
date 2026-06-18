@@ -22,28 +22,29 @@ public class PlayerPowerUp : MonoBehaviour
         {
             Atirar();
         }
-
     }
 
     private void Atirar()
     {
-        GameObject bola =
-            Instantiate(
-                fireballPrefab,
-                pontoDisparo.position,
-                Quaternion.identity
-            );
-
-        Fireball fireball =
-            bola.GetComponent<Fireball>();
+        Vector3 posicaoTiro = transform.position;
 
         if (spriteRenderer.flipX)
         {
-            fireball.direcao = -1;
+            posicaoTiro.x -= 0.7f;
         }
         else
         {
-            fireball.direcao = 1;
+            posicaoTiro.x += 0.7f;
         }
+
+        GameObject bola = Instantiate(
+            fireballPrefab,
+            posicaoTiro,
+            Quaternion.identity
+        );
+
+        Fireball fireball = bola.GetComponent<Fireball>();
+
+        fireball.direcao = spriteRenderer.flipX ? -1 : 1;
     }
 }

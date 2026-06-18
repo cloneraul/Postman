@@ -15,6 +15,11 @@ public class Fireball : MonoBehaviour
         );
     }
 
+    private void Start()
+    {
+        Destroy(gameObject, 3f);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Enemy"))
@@ -22,10 +27,5 @@ public class Fireball : MonoBehaviour
             Destroy(other.gameObject);
             Destroy(gameObject);
         }
-    }
-
-    private void Start()
-    {
-        Destroy(gameObject, 3f);
     }
 }
