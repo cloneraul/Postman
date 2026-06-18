@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerPowerUp : MonoBehaviour
 {
@@ -17,10 +18,11 @@ public class PlayerPowerUp : MonoBehaviour
     private void Update()
     {
         if (temPoderDeFogo &&
-            Input.GetKeyDown(KeyCode.X))
+            Keyboard.current.xKey.wasPressedThisFrame)
         {
             Atirar();
         }
+
     }
 
     private void Atirar()
