@@ -13,13 +13,13 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D _rigidbody2D;
     private SpriteRenderer _spriteRenderer;
-    private Animator _animator;
+  //  private Animator _animator;
 
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        _animator = GetComponent<Animator>();
+  //      _animator = GetComponent<Animator>();
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -84,17 +84,17 @@ public class Player : MonoBehaviour
         if (Keyboard.current.zKey.wasPressedThisFrame)
         {
             Debug.Log("Ataque");
-            _animator.SetTrigger("Atacar");
+       //     _animator.SetTrigger("Atacar");
         }
 
         
         if (Keyboard.current.xKey.wasPressedThisFrame)
         {
             Debug.Log("Power Up");
-            _animator.SetTrigger("PowerUp");
+      //      _animator.SetTrigger("PowerUp");
         }
 
         
-        _animator.SetBool("Andando", andando);
+     //   _animator.SetBool("Andando", andando);
     }
 }
