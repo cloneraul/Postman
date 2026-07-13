@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FirePowerUp : MonoBehaviour
+public class IcePowerUp : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -10,8 +10,8 @@ public class FirePowerUp : MonoBehaviour
 
             if (power != null)
             {
-                power.temPoderDeFogo = true;
-                power.temPoderDeGelo = false;
+                power.temPoderDeFogo = false;
+                power.temPoderDeGelo = true;
             }
 
             Destroy(gameObject);

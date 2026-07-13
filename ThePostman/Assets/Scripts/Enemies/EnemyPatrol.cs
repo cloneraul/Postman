@@ -1,7 +1,9 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyPatrol : MonoBehaviour
 {
+    [Header("Movimentação")]
     public float velocidade = 2f;
 
     [Header("Limites da Patrulha")]
@@ -9,15 +11,29 @@ public class EnemyPatrol : MonoBehaviour
     public Transform pontoDireita;
 
     private Rigidbody2D rb;
+    private SpriteRenderer sprite;
+
     private bool indoDireita = true;
+    private bool congelado = false;
+
+    private float velocidadeOriginal;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
+
+        velocidadeOriginal = velocidade;
     }
 
     private void FixedUpdate()
     {
+        if (congelado)
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            return;
+        }
+
         if (indoDireita)
         {
             rb.linearVelocity = new Vector2(velocidade, rb.linearVelocity.y);
@@ -38,6 +54,33 @@ public class EnemyPatrol : MonoBehaviour
                 transform.localScale = new Vector3(1, 1, 1);
             }
         }
+    }
+
+    public void Freeze(float tempo)
+    {
+        if (!congelado)
+        {
+            StartCoroutine(Congelar(tempo));
+        }
+    }
+
+    private IEnumerator Congelar(float tempo)
+    {
+        congelado = true;
+
+        velocidade = 0;
+
+        if (sprite != null)
+            sprite.color = Color.cyan;
+
+        yield return new WaitForSeconds(tempo);
+
+        velocidade = velocidadeOriginal;
+
+        if (sprite != null)
+            sprite.color = Color.white;
+
+        congelado = false;
     }
 
     private void OnDrawGizmos()
