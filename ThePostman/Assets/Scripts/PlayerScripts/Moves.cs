@@ -13,13 +13,13 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D _rigidbody2D;
     private SpriteRenderer _spriteRenderer;
-  //  private Animator _animator;
+    // private Animator _animator;
 
     void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-  //      _animator = GetComponent<Animator>();
+        // _animator = GetComponent<Animator>();
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -42,8 +42,8 @@ public class Player : MonoBehaviour
     {
         andando = false;
 
-        
-        if (Keyboard.current.aKey.isPressed)
+        // ANDAR PARA ESQUERDA
+        if (Keyboard.current.leftArrowKey.isPressed)
         {
             transform.position += new Vector3(-velocidade * Time.deltaTime, 0, 0);
 
@@ -57,8 +57,8 @@ public class Player : MonoBehaviour
             Debug.Log("Andando para esquerda");
         }
 
-        
-        if (Keyboard.current.dKey.isPressed)
+        // ANDAR PARA DIREITA
+        if (Keyboard.current.rightArrowKey.isPressed)
         {
             transform.position += new Vector3(velocidade * Time.deltaTime, 0, 0);
 
@@ -72,7 +72,7 @@ public class Player : MonoBehaviour
             Debug.Log("Andando para direita");
         }
 
-        
+        // PULO
         if (Keyboard.current.spaceKey.wasPressedThisFrame && noChao)
         {
             _rigidbody2D.AddForce(Vector2.up * forcaPulo, ForceMode2D.Impulse);
@@ -80,21 +80,21 @@ public class Player : MonoBehaviour
             Debug.Log("Pulou");
         }
 
-        
+        // ATAQUE
         if (Keyboard.current.zKey.wasPressedThisFrame)
         {
             Debug.Log("Ataque");
-       //     _animator.SetTrigger("Atacar");
+            // _animator.SetTrigger("Atacar");
         }
 
-        
+        // POWER UP
         if (Keyboard.current.xKey.wasPressedThisFrame)
         {
             Debug.Log("Power Up");
-      //      _animator.SetTrigger("PowerUp");
+            // _animator.SetTrigger("PowerUp");
         }
 
-        
-     //   _animator.SetBool("Andando", andando);
+        // ANIMAÇÃO
+        // _animator.SetBool("Andando", andando);
     }
 }
