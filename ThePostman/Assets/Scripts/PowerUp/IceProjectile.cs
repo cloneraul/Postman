@@ -7,7 +7,12 @@ public class IceProjectile : MonoBehaviour
 
     private void Update()
     {
-        transform.Translate(Vector2.right * direcao * velocidade * Time.deltaTime);
+        transform.Translate(
+            Vector2.right *
+            direcao *
+            velocidade *
+            Time.deltaTime
+        );
     }
 
     private void Start()
@@ -19,11 +24,20 @@ public class IceProjectile : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            EnemyPatrol enemy = other.GetComponent<EnemyPatrol>();
+            EnemyPatrol enemyTerrestre =
+                other.GetComponent<EnemyPatrol>();
 
-            if (enemy != null)
+            if (enemyTerrestre != null)
             {
-                enemy.Freeze(3f);
+                enemyTerrestre.Freeze(3f);
+            }
+
+            FlyingEnemy enemyVoador =
+                other.GetComponent<FlyingEnemy>();
+
+            if (enemyVoador != null)
+            {
+                enemyVoador.Freeze(3f);
             }
 
             Destroy(gameObject);
