@@ -10,6 +10,10 @@ public class FlyingEnemy : MonoBehaviour
     public float velocidade = 4f;
     public float distanciaMinimaDoPlayer = 0.5f;
 
+    [Header("Movimento Aleatório")]
+    public float distanciaMovimentoAleatorio = 3f;
+    public float tempoParaNovoDestino = 2f;
+
     [Header("Dano")]
     public int dano = 1;
 
@@ -23,24 +27,29 @@ public class FlyingEnemy : MonoBehaviour
     private bool congelado = false;
     private int vezesCongelado = 0;
 
+    private Vector2 destinoAleatorio;
+    private float tempoDestino;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        GameObject jogador =
-            GameObject.FindGameObjectWithTag("Player");
+        GameObject jogador = GameObject.FindGameObjectWithTag("Player");
 
         if (jogador != null)
         {
             player = jogador.transform;
         }
+
+        EscolherNovoDestino();
     }
 
     private void FixedUpdate()
     {
         if (player == null)
         {
+            rb.linearVelocity = Vector2.zero;
             return;
         }
 
@@ -55,15 +64,32 @@ public class FlyingEnemy : MonoBehaviour
             player.position
         );
 
-        if (distancia <= distanciaDeteccao &&
-            distancia > distanciaMinimaDoPlayer)
+        if (distancia <= distanciaDeteccao)
         {
-            Vector2 direcao =
-                (player.position - transform.position).normalized;
+            PerseguirPlayer();
+        }
+        else
+        {
+            MovimentoAleatorio();
+        }
+    }
+
+    private void PerseguirPlayer()
+    {
+        float distancia = Vector2.Distance(
+            transform.position,
+            player.position
+        );
+
+        if (distancia > distanciaMinimaDoPlayer)
+        {
+            Vector2 direcao = (
+                player.position - transform.position
+            ).normalized;
 
             rb.linearVelocity = direcao * velocidade;
 
-            VirarParaPlayer(direcao.x);
+            VirarParaDirecao(direcao.x);
         }
         else
         {
@@ -71,18 +97,50 @@ public class FlyingEnemy : MonoBehaviour
         }
     }
 
-    private void VirarParaPlayer(float direcaoX)
+    private void MovimentoAleatorio()
+    {
+        tempoDestino += Time.fixedDeltaTime;
+
+        if (
+            Vector2.Distance(transform.position, destinoAleatorio) < 0.2f ||
+            tempoDestino >= tempoParaNovoDestino
+        )
+        {
+            EscolherNovoDestino();
+        }
+
+        Vector2 direcao = (
+            destinoAleatorio - (Vector2)transform.position
+        ).normalized;
+
+        rb.linearVelocity = direcao * velocidade;
+
+        VirarParaDirecao(direcao.x);
+    }
+
+    private void EscolherNovoDestino()
+    {
+        Vector2 posicaoAleatoria =
+            Random.insideUnitCircle * distanciaMovimentoAleatorio;
+
+        destinoAleatorio =
+            (Vector2)transform.position + posicaoAleatoria;
+
+        tempoDestino = 0f;
+    }
+
+    private void VirarParaDirecao(float direcaoX)
     {
         if (spriteRenderer == null)
         {
             return;
         }
 
-        if (direcaoX < 0)
+        if (direcaoX < -0.01f)
         {
             spriteRenderer.flipX = true;
         }
-        else if (direcaoX > 0)
+        else if (direcaoX > 0.01f)
         {
             spriteRenderer.flipX = false;
         }
@@ -115,6 +173,8 @@ public class FlyingEnemy : MonoBehaviour
     {
         congelado = true;
 
+        rb.linearVelocity = Vector2.zero;
+
         if (spriteRenderer != null)
         {
             spriteRenderer.color = Color.cyan;
@@ -142,5 +202,22 @@ public class FlyingEnemy : MonoBehaviour
                 playerHealth.TakeDamage(dano);
             }
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+
+        Gizmos.DrawWireSphere(
+            transform.position,
+            distanciaDeteccao
+        );
+
+        Gizmos.color = Color.cyan;
+
+        Gizmos.DrawWireSphere(
+            transform.position,
+            distanciaMovimentoAleatorio
+        );
     }
 }
