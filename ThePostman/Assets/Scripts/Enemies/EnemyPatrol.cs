@@ -5,10 +5,7 @@ public class EnemyPatrol : MonoBehaviour
 {
     [Header("Movimentação")]
     public float velocidade = 2f;
-
-    [Header("Limites da Patrulha")]
-    public Transform pontoEsquerda;
-    public Transform pontoDireita;
+    public float distanciaPatrulha = 5f;
 
     [Header("Gelo")]
     public int maximoCongelamentos = 3;
@@ -22,19 +19,37 @@ public class EnemyPatrol : MonoBehaviour
     private float velocidadeOriginal;
     private int vezesCongelado = 0;
 
+    private float posicaoInicialX;
+    private float limiteEsquerdo;
+    private float limiteDireito;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
 
         velocidadeOriginal = velocidade;
+
+        posicaoInicialX = transform.position.x;
+
+        limiteEsquerdo = posicaoInicialX - distanciaPatrulha;
+        limiteDireito = posicaoInicialX + distanciaPatrulha;
     }
 
     private void FixedUpdate()
     {
+        if (rb == null)
+        {
+            return;
+        }
+
         if (congelado)
         {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(
+                0,
+                rb.linearVelocity.y
+            );
+
             return;
         }
 
@@ -45,10 +60,14 @@ public class EnemyPatrol : MonoBehaviour
                 rb.linearVelocity.y
             );
 
-            if (transform.position.x >= pontoDireita.position.x)
+            if (transform.position.x >= limiteDireito)
             {
                 indoDireita = false;
-                transform.localScale = new Vector3(-1, 1, 1);
+
+                if (sprite != null)
+                {
+                    sprite.flipX = true;
+                }
             }
         }
         else
@@ -58,10 +77,14 @@ public class EnemyPatrol : MonoBehaviour
                 rb.linearVelocity.y
             );
 
-            if (transform.position.x <= pontoEsquerda.position.x)
+            if (transform.position.x <= limiteEsquerdo)
             {
                 indoDireita = true;
-                transform.localScale = new Vector3(1, 1, 1);
+
+                if (sprite != null)
+                {
+                    sprite.flipX = false;
+                }
             }
         }
     }
@@ -93,7 +116,10 @@ public class EnemyPatrol : MonoBehaviour
     {
         congelado = true;
 
-        velocidade = 0;
+        rb.linearVelocity = new Vector2(
+            0,
+            rb.linearVelocity.y
+        );
 
         if (sprite != null)
         {
@@ -101,8 +127,6 @@ public class EnemyPatrol : MonoBehaviour
         }
 
         yield return new WaitForSeconds(tempo);
-
-        velocidade = velocidadeOriginal;
 
         if (sprite != null)
         {
@@ -112,26 +136,34 @@ public class EnemyPatrol : MonoBehaviour
         congelado = false;
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
-        if (pontoEsquerda != null && pontoDireita != null)
+        if (!Application.isPlaying)
         {
+            float esquerda =
+                transform.position.x - distanciaPatrulha;
+
+            float direita =
+                transform.position.x + distanciaPatrulha;
+
+            Vector3 inicio = new Vector3(
+                esquerda,
+                transform.position.y,
+                transform.position.z
+            );
+
+            Vector3 fim = new Vector3(
+                direita,
+                transform.position.y,
+                transform.position.z
+            );
+
             Gizmos.color = Color.red;
 
-            Gizmos.DrawLine(
-                pontoEsquerda.position,
-                pontoDireita.position
-            );
+            Gizmos.DrawLine(inicio, fim);
 
-            Gizmos.DrawSphere(
-                pontoEsquerda.position,
-                0.15f
-            );
-
-            Gizmos.DrawSphere(
-                pontoDireita.position,
-                0.15f
-            );
+            Gizmos.DrawSphere(inicio, 0.15f);
+            Gizmos.DrawSphere(fim, 0.15f);
         }
     }
 }
