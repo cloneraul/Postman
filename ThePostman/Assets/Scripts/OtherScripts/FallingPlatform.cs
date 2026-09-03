@@ -6,6 +6,7 @@ public class FallingPlatform : MonoBehaviour
     [Header("Configurações")]
     public float tempoAntesDeCair = 1.5f;
     public float intensidadeTremor = 0.05f;
+    public float tempoParaDesaparecer = 5f;
 
     private Rigidbody2D rb;
     private bool ativada = false;
@@ -46,13 +47,10 @@ public class FallingPlatform : MonoBehaviour
         transform.position = posicaoInicial;
 
         rb.bodyType = RigidbodyType2D.Dynamic;
-    }
 
-    private void OnBecameInvisible()
-    {
-        if (ativada)
-        {
-            Destroy(gameObject);
-        }
+        yield return new WaitForSeconds(tempoParaDesaparecer);
+
+        Destroy(gameObject);
     }
 }
+
