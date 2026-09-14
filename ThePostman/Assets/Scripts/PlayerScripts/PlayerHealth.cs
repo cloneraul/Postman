@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     public int vida = 3;
+    public int vidaMaxima = 3;
 
     private void Start()
     {
@@ -26,6 +27,20 @@ public class PlayerHealth : MonoBehaviour
         {
             Die();
         }
+    }
+
+    public void Heal(int quantidade)
+    {
+        vida += quantidade;
+
+        if (vida > vidaMaxima)
+        {
+            vida = vidaMaxima;
+        }
+
+        Debug.Log("Vida recuperada: " + vida);
+
+        UIManager.AtualizarVida(vida);
     }
 
     private void Die()
