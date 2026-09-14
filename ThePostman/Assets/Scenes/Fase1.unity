@@ -2360,7 +2360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlyingEnemy
   distanciaDeteccao: 8
-  velocidade: 4
+  velocidade: 2
   distanciaMinimaDoPlayer: 0.5
   distanciaMovimentoAleatorio: 3
   tempoParaNovoDestino: 1
@@ -2379,7 +2379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   vidaMaxima: 3
-  vidaAtual: 3
+  vidaAtual: 2
 --- !u!1001 &3701200211658194234
 PrefabInstance:
   m_ObjectHideFlags: 0

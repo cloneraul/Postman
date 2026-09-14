@@ -5,13 +5,21 @@ public class PlayerHealth : MonoBehaviour
     public int vida = 3;
     public int vidaMaxima = 3;
 
+    private bool morreu = false;
+
     private void Start()
     {
+        vida = vidaMaxima;
         UIManager.AtualizarVida(vida);
     }
 
     public void TakeDamage(int dano)
     {
+        if (morreu)
+        {
+            return;
+        }
+
         vida -= dano;
 
         if (vida < 0)
@@ -19,7 +27,7 @@ public class PlayerHealth : MonoBehaviour
             vida = 0;
         }
 
-        Debug.Log("Vida: " + vida);
+        Debug.Log("Vida do Player: " + vida);
 
         UIManager.AtualizarVida(vida);
 
@@ -31,6 +39,11 @@ public class PlayerHealth : MonoBehaviour
 
     public void Heal(int quantidade)
     {
+        if (morreu)
+        {
+            return;
+        }
+
         vida += quantidade;
 
         if (vida > vidaMaxima)
@@ -45,7 +58,23 @@ public class PlayerHealth : MonoBehaviour
 
     private void Die()
     {
+        if (morreu)
+        {
+            return;
+        }
+
+        morreu = true;
+
         Debug.Log("Player morreu");
+
+        if (PlayerLives.Instance != null)
+        {
+            PlayerLives.Instance.PerderVida();
+        }
+        else
+        {
+            Debug.LogWarning("PlayerLives não foi encontrado na cena.");
+        }
 
         Destroy(gameObject);
     }
