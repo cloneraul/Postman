@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,16 +11,14 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D _rigidbody2D;
     private SpriteRenderer _spriteRenderer;
-    // private Animator _animator;
 
-    void Start()
+    private void Start()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        // _animator = GetComponent<Animator>();
     }
 
-    void OnCollisionStay2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("chao"))
         {
@@ -30,7 +26,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void OnCollisionExit2D(Collision2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("chao"))
         {
@@ -38,14 +34,22 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
+        if (Keyboard.current == null)
+        {
+            return;
+        }
+
         andando = false;
 
-        // ANDAR PARA ESQUERDA
         if (Keyboard.current.leftArrowKey.isPressed)
         {
-            transform.position += new Vector3(-velocidade * Time.deltaTime, 0, 0);
+            transform.position += new Vector3(
+                -velocidade * Time.deltaTime,
+                0,
+                0
+            );
 
             _spriteRenderer.flipX = true;
 
@@ -53,14 +57,15 @@ public class Player : MonoBehaviour
             {
                 andando = true;
             }
-
-            Debug.Log("Andando para esquerda");
         }
 
-        // ANDAR PARA DIREITA
         if (Keyboard.current.rightArrowKey.isPressed)
         {
-            transform.position += new Vector3(velocidade * Time.deltaTime, 0, 0);
+            transform.position += new Vector3(
+                velocidade * Time.deltaTime,
+                0,
+                0
+            );
 
             _spriteRenderer.flipX = false;
 
@@ -68,33 +73,19 @@ public class Player : MonoBehaviour
             {
                 andando = true;
             }
-
-            Debug.Log("Andando para direita");
         }
 
-        // PULO
         if (Keyboard.current.spaceKey.wasPressedThisFrame && noChao)
         {
-            _rigidbody2D.AddForce(Vector2.up * forcaPulo, ForceMode2D.Impulse);
-
-            Debug.Log("Pulou");
+            _rigidbody2D.AddForce(
+                Vector2.up * forcaPulo,
+                ForceMode2D.Impulse
+            );
         }
 
-        // ATAQUE
-        if (Keyboard.current.zKey.wasPressedThisFrame)
-        {
-            Debug.Log("Ataque");
-            // _animator.SetTrigger("Atacar");
-        }
-
-        // POWER UP
         if (Keyboard.current.xKey.wasPressedThisFrame)
         {
             Debug.Log("Power Up");
-            // _animator.SetTrigger("PowerUp");
         }
-
-        // ANIMAÇÃO
-        // _animator.SetBool("Andando", andando);
     }
 }
