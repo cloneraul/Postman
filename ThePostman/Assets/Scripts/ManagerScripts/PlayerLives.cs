@@ -45,6 +45,12 @@ public class PlayerLives : MonoBehaviour
         if (cena.name == nomeCenaMenu)
         {
             vidasAtuais = vidasMaximas;
+
+            if (CheckpointManager.Instance != null)
+            {
+                CheckpointManager.Instance.LimparCheckpoint();
+            }
+
             AtualizarInterface();
 
             if (LivesUI.Instance != null)
