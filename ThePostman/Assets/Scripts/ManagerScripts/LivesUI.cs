@@ -35,4 +35,20 @@ public class LivesUI : MonoBehaviour
             textoVidas.text = "Vidas: " + quantidade;
         }
     }
+
+    public void EsconderTexto()
+    {
+        if (textoVidas != null)
+        {
+            textoVidas.gameObject.SetActive(false);
+        }
+    }
+
+    public void MostrarTexto()
+    {
+        if (textoVidas != null)
+        {
+            textoVidas.gameObject.SetActive(true);
+        }
+    }
 }

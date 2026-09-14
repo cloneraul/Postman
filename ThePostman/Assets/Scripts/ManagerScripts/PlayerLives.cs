@@ -9,6 +9,9 @@ public class PlayerLives : MonoBehaviour
     public int vidasMaximas = 3;
     public int vidasAtuais = 3;
 
+    [Header("Cena do Menu")]
+    public string nomeCenaMenu = "Menu";
+
     private void Awake()
     {
         if (Instance == null)
@@ -22,9 +25,42 @@ public class PlayerLives : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += AoCarregarCena;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= AoCarregarCena;
+    }
+
     private void Start()
     {
-        AtualizarUI();
+        AtualizarInterface();
+    }
+
+    private void AoCarregarCena(Scene cena, LoadSceneMode modo)
+    {
+        if (cena.name == nomeCenaMenu)
+        {
+            vidasAtuais = vidasMaximas;
+            AtualizarInterface();
+
+            if (LivesUI.Instance != null)
+            {
+                LivesUI.Instance.EsconderTexto();
+            }
+        }
+        else
+        {
+            AtualizarInterface();
+
+            if (LivesUI.Instance != null)
+            {
+                LivesUI.Instance.MostrarTexto();
+            }
+        }
     }
 
     public void PerderVida()
@@ -36,29 +72,19 @@ public class PlayerLives : MonoBehaviour
             vidasAtuais = 0;
         }
 
-        AtualizarUI();
+        AtualizarInterface();
 
         if (vidasAtuais <= 0)
         {
-            VoltarAoMenu();
+            SceneManager.LoadScene(nomeCenaMenu);
         }
         else
         {
-            ReiniciarFase();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
-    private void ReiniciarFase()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    private void VoltarAoMenu()
-    {
-        SceneManager.LoadScene("Menu");
-    }
-
-    private void AtualizarUI()
+    private void AtualizarInterface()
     {
         if (LivesUI.Instance != null)
         {
