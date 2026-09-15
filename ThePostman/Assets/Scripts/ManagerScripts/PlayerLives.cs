@@ -90,6 +90,15 @@ public class PlayerLives : MonoBehaviour
         }
     }
 
+    public void GanharVida(int quantidade)
+    {
+        vidasAtuais += quantidade;
+
+        Debug.Log("Vidas atuais: " + vidasAtuais);
+
+        AtualizarInterface();
+    }
+
     private void AtualizarInterface()
     {
         if (LivesUI.Instance != null)
