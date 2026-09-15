@@ -5,6 +5,7 @@ public class MainMenuManager : MonoBehaviour
 {
     [Header("Cenas")]
     public string primeiraFase = "Fase1";
+    public string nomeCenaMenu = "Menu";
 
     [Header("Painéis")]
     public GameObject panelMenu;
@@ -31,8 +32,16 @@ public class MainMenuManager : MonoBehaviour
         panelMenu.SetActive(true);
         panelCreditos.SetActive(false);
     }
+
+    public void VoltarAoMenu()
+    {
+        SceneManager.LoadScene(nomeCenaMenu);
+    }
+
+    public void SairDoJogo()
+    {
+        Debug.Log("Saindo do jogo...");
+
+        Application.Quit();
+    }
 }
-
-
-
-
