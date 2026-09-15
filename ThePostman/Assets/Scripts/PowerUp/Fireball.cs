@@ -4,6 +4,12 @@ public class Fireball : MonoBehaviour
 {
     public float velocidade = 10f;
     public int direcao = 1;
+    public int dano = 2;
+
+    private void Start()
+    {
+        Destroy(gameObject, 3f);
+    }
 
     private void Update()
     {
@@ -15,16 +21,24 @@ public class Fireball : MonoBehaviour
         );
     }
 
-    private void Start()
-    {
-        Destroy(gameObject, 3f);
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy"))
+        EnemyHealth inimigo =
+            other.GetComponentInParent<EnemyHealth>();
+
+        if (inimigo != null)
         {
-            Destroy(other.gameObject);
+            inimigo.TakeDamage(dano);
+            Destroy(gameObject);
+            return;
+        }
+
+        SandwormBoss boss =
+            other.GetComponentInParent<SandwormBoss>();
+
+        if (boss != null)
+        {
+            boss.TakeDamage(dano);
             Destroy(gameObject);
         }
     }
