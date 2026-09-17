@@ -731,7 +731,7 @@ Transform:
   m_GameObject: {fileID: 563642323}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 18.13, y: 0.98, z: 0}
+  m_LocalPosition: {x: 20.67, y: 0.89, z: 0}
   m_LocalScale: {x: 2.6837397, y: 7.683781, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1609,7 +1609,7 @@ Transform:
   m_GameObject: {fileID: 1837083165}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.89, y: -6.84, z: 0}
+  m_LocalPosition: {x: 18.39, y: -4.43, z: 0}
   m_LocalScale: {x: 1, y: 2.3456, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2336,7 +2336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a346420d003c984dada217fa0d25e20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
-  ataquePrefab: {fileID: 8015210651688986084, guid: df41efb6d8a9ccd418dc4a2b0c4db320, type: 3}
+  ataquePrefab: {fileID: 213520949531834972, guid: b732836ceb5346d4bae4e558951d7c37, type: 3}
   distanciaDoPlayer: 0.9
   tempoEntreAtaques: 0.35
 --- !u!1 &2134066997

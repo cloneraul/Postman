@@ -18,20 +18,54 @@ public class Player : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        VerificarChao(collision);
+    }
+
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("chao"))
-        {
-            noChao = true;
-        }
+        VerificarChao(collision);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("chao"))
+        if (EhChaoOuPlataforma(collision.gameObject))
         {
             noChao = false;
         }
+    }
+
+    private void VerificarChao(Collision2D collision)
+    {
+        if (!EhChaoOuPlataforma(collision.gameObject))
+        {
+            return;
+        }
+
+        foreach (ContactPoint2D contato in collision.contacts)
+        {
+            if (contato.normal.y > 0.5f)
+            {
+                noChao = true;
+                return;
+            }
+        }
+    }
+
+    private bool EhChaoOuPlataforma(GameObject objeto)
+    {
+        if (objeto.CompareTag("chao"))
+        {
+            return true;
+        }
+
+        if (objeto.GetComponent<FallingPlatform>() != null)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void Update()
@@ -47,11 +81,14 @@ public class Player : MonoBehaviour
         {
             transform.position += new Vector3(
                 -velocidade * Time.deltaTime,
-                0,
-                0
+                0f,
+                0f
             );
 
-            _spriteRenderer.flipX = true;
+            if (_spriteRenderer != null)
+            {
+                _spriteRenderer.flipX = true;
+            }
 
             if (noChao)
             {
@@ -63,11 +100,14 @@ public class Player : MonoBehaviour
         {
             transform.position += new Vector3(
                 velocidade * Time.deltaTime,
-                0,
-                0
+                0f,
+                0f
             );
 
-            _spriteRenderer.flipX = false;
+            if (_spriteRenderer != null)
+            {
+                _spriteRenderer.flipX = false;
+            }
 
             if (noChao)
             {
@@ -78,14 +118,16 @@ public class Player : MonoBehaviour
         if (Keyboard.current.spaceKey.wasPressedThisFrame && noChao)
         {
             _rigidbody2D.linearVelocity = new Vector2(
-                0,
-                _rigidbody2D.linearVelocity.y
+                _rigidbody2D.linearVelocity.x,
+                0f
             );
 
             _rigidbody2D.AddForce(
                 Vector2.up * forcaPulo,
                 ForceMode2D.Impulse
             );
+
+            noChao = false;
         }
 
         if (Keyboard.current.xKey.wasPressedThisFrame)

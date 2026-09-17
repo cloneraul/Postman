@@ -5,52 +5,49 @@ public class FallingPlatform : MonoBehaviour
 {
     [Header("Configurações")]
     public float tempoAntesDeCair = 1.5f;
-    public float intensidadeTremor = 0.05f;
+    public float velocidadeQueda = 5f;
     public float tempoParaDesaparecer = 5f;
 
     private Rigidbody2D rb;
     private bool ativada = false;
-    private Vector3 posicaoInicial;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
 
-        rb.bodyType = RigidbodyType2D.Static;
+        if (rb == null)
+        {
+            rb = gameObject.AddComponent<Rigidbody2D>();
+        }
 
-        posicaoInicial = transform.position;
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.gravityScale = 0f;
+        rb.freezeRotation = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!ativada && collision.gameObject.CompareTag("Player"))
+        if (ativada)
+        {
+            return;
+        }
+
+        if (collision.gameObject.CompareTag("Player"))
         {
             ativada = true;
-            StartCoroutine(TremerECair());
+            StartCoroutine(Cair());
         }
     }
 
-    private IEnumerator TremerECair()
+    private IEnumerator Cair()
     {
-        float tempo = 0f;
-
-        while (tempo < tempoAntesDeCair)
-        {
-            transform.position = posicaoInicial +
-                                 (Vector3)Random.insideUnitCircle * intensidadeTremor;
-
-            tempo += Time.deltaTime;
-
-            yield return null;
-        }
-
-        transform.position = posicaoInicial;
+        yield return new WaitForSeconds(tempoAntesDeCair);
 
         rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.gravityScale = velocidadeQueda;
 
         yield return new WaitForSeconds(tempoParaDesaparecer);
 
         Destroy(gameObject);
     }
 }
-
