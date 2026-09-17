@@ -77,6 +77,11 @@ public class Player : MonoBehaviour
 
         if (Keyboard.current.spaceKey.wasPressedThisFrame && noChao)
         {
+            _rigidbody2D.linearVelocity = new Vector2(
+                0,
+                _rigidbody2D.linearVelocity.y
+            );
+
             _rigidbody2D.AddForce(
                 Vector2.up * forcaPulo,
                 ForceMode2D.Impulse

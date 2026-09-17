@@ -2017,6 +2017,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyPatrol
   velocidade: 2
   distanciaPatrulha: 5
+  danoContato: 1
+  intervaloDano: 1
   maximoCongelamentos: 3
 --- !u!212 &2018061076
 SpriteRenderer:
@@ -2158,7 +2160,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &2025460849
 CircleCollider2D:
   m_ObjectHideFlags: 0

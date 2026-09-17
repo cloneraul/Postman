@@ -20,6 +20,7 @@ public class PlayerHealth : MonoBehaviour
 
     private bool morreu = false;
     private bool invencivel = false;
+    private bool recebeuKnockback = false;
 
     private void Start()
     {
@@ -29,6 +30,50 @@ public class PlayerHealth : MonoBehaviour
         vida = vidaMaxima;
 
         UIManager.AtualizarVida(vida);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!collision.gameObject.CompareTag("chao"))
+        {
+            return;
+        }
+
+        if (!recebeuKnockback)
+        {
+            return;
+        }
+
+        foreach (ContactPoint2D contato in collision.contacts)
+        {
+            if (contato.normal.y > 0.5f)
+            {
+                PararDeslizamento();
+                break;
+            }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (!collision.gameObject.CompareTag("chao"))
+        {
+            return;
+        }
+
+        if (!recebeuKnockback)
+        {
+            return;
+        }
+
+        foreach (ContactPoint2D contato in collision.contacts)
+        {
+            if (contato.normal.y > 0.5f)
+            {
+                PararDeslizamento();
+                break;
+            }
+        }
     }
 
     public void TakeDamage(int dano)
@@ -103,10 +148,27 @@ public class PlayerHealth : MonoBehaviour
             direcao = -1f;
         }
 
+        recebeuKnockback = true;
+
         _rigidbody2D.linearVelocity = new Vector2(
             direcao * forcaKnockback,
             forcaKnockbackVertical
         );
+    }
+
+    private void PararDeslizamento()
+    {
+        if (_rigidbody2D == null)
+        {
+            return;
+        }
+
+        _rigidbody2D.linearVelocity = new Vector2(
+            0f,
+            _rigidbody2D.linearVelocity.y
+        );
+
+        recebeuKnockback = false;
     }
 
     private IEnumerator Invencibilidade()
