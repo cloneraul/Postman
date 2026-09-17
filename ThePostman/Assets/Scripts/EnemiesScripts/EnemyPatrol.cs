@@ -7,6 +7,10 @@ public class EnemyPatrol : MonoBehaviour
     public float velocidade = 2f;
     public float distanciaPatrulha = 5f;
 
+    [Header("Dano ao Jogador")]
+    public int danoContato = 1;
+    public float intervaloDano = 1f;
+
     [Header("Gelo")]
     public int maximoCongelamentos = 3;
 
@@ -17,6 +21,8 @@ public class EnemyPatrol : MonoBehaviour
     private bool congelado = false;
 
     private float velocidadeOriginal;
+    private float proximoDano = 0f;
+
     private int vezesCongelado = 0;
 
     private float posicaoInicialX;
@@ -89,6 +95,49 @@ public class EnemyPatrol : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        CausarDano(collision.gameObject);
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        CausarDano(collision.gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        CausarDano(other.gameObject);
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        CausarDano(other.gameObject);
+    }
+
+    private void CausarDano(GameObject objeto)
+    {
+        if (Time.time < proximoDano)
+        {
+            return;
+        }
+
+        PlayerHealth jogador =
+            objeto.GetComponentInParent<PlayerHealth>();
+
+        if (jogador == null)
+        {
+            return;
+        }
+
+        jogador.TakeDamage(
+            danoContato,
+            transform.position
+        );
+
+        proximoDano = Time.time + intervaloDano;
+    }
+
     public void Freeze(float tempo)
     {
         vezesCongelado++;
@@ -116,10 +165,13 @@ public class EnemyPatrol : MonoBehaviour
     {
         congelado = true;
 
-        rb.linearVelocity = new Vector2(
-            0,
-            rb.linearVelocity.y
-        );
+        if (rb != null)
+        {
+            rb.linearVelocity = new Vector2(
+                0,
+                rb.linearVelocity.y
+            );
+        }
 
         if (sprite != null)
         {
