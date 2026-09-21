@@ -9,8 +9,9 @@ public class PlayerLives : MonoBehaviour
     public int vidasMaximas = 3;
     public int vidasAtuais = 3;
 
-    [Header("Cena do Menu")]
-    public string nomeCenaMenu = "Menu";
+    [Header("Cenas")]
+    public string nomeCenaMenu = "MainMenu";
+    public string nomeCenaGameOver = "GameOver";
 
     private void Awake()
     {
@@ -58,6 +59,15 @@ public class PlayerLives : MonoBehaviour
                 LivesUI.Instance.EsconderTexto();
             }
         }
+        else if (cena.name == nomeCenaGameOver)
+        {
+            AtualizarInterface();
+
+            if (LivesUI.Instance != null)
+            {
+                LivesUI.Instance.EsconderTexto();
+            }
+        }
         else
         {
             AtualizarInterface();
@@ -78,21 +88,34 @@ public class PlayerLives : MonoBehaviour
             vidasAtuais = 0;
         }
 
+        Debug.Log("Vidas restantes: " + vidasAtuais);
+
         AtualizarInterface();
 
         if (vidasAtuais <= 0)
         {
-            SceneManager.LoadScene(nomeCenaMenu);
+            SceneManager.LoadScene(
+                nomeCenaGameOver,
+                LoadSceneMode.Single
+            );
         }
         else
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene(
+                SceneManager.GetActiveScene().name,
+                LoadSceneMode.Single
+            );
         }
     }
 
     public void GanharVida(int quantidade)
     {
         vidasAtuais += quantidade;
+
+        if (vidasAtuais > vidasMaximas)
+        {
+            vidasAtuais = vidasMaximas;
+        }
 
         Debug.Log("Vidas atuais: " + vidasAtuais);
 
