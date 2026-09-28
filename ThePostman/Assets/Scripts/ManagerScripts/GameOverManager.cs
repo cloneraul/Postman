@@ -5,6 +5,11 @@ public class GameOverManager : MonoBehaviour
 {
     public void TentarNovamente()
     {
+        if (PlayerLives.Instance != null)
+        {
+            PlayerLives.Instance.ReiniciarVidas();
+        }
+
         SceneManager.LoadScene("Fase1", LoadSceneMode.Single);
     }
 

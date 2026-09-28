@@ -108,6 +108,15 @@ public class PlayerLives : MonoBehaviour
         }
     }
 
+    public void ReiniciarVidas()
+    {
+        vidasAtuais = vidasMaximas;
+
+        Debug.Log("Vidas reiniciadas: " + vidasAtuais);
+
+        AtualizarInterface();
+    }
+
     public void GanharVida(int quantidade)
     {
         vidasAtuais += quantidade;
