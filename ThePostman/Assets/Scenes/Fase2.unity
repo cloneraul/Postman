@@ -814,7 +814,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0405ac3fd749dd8428d37a2f4ed68cfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NextLevel
-  nomeDaProximaCena: Fase2
+  nomeDaProximaCena: MainMenu
 --- !u!212 &1047873554
 SpriteRenderer:
   serializedVersion: 3

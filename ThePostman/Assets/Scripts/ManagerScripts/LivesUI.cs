@@ -1,4 +1,6 @@
+
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class LivesUI : MonoBehaviour
@@ -7,6 +9,10 @@ public class LivesUI : MonoBehaviour
 
     [Header("Texto das Vidas")]
     public TextMeshProUGUI textoVidas;
+
+    [Header("Cenas")]
+    public string nomeCenaMenu = "MainMenu";
+    public string nomeCenaGameOver = "GameOver";
 
     private void Awake()
     {
@@ -20,11 +26,43 @@ public class LivesUI : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += AoCarregarCena;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= AoCarregarCena;
+    }
+
     private void Start()
     {
+        VerificarCena();
+
         if (PlayerLives.Instance != null)
         {
             AtualizarVidas(PlayerLives.Instance.vidasAtuais);
+        }
+    }
+
+    private void AoCarregarCena(Scene cena, LoadSceneMode modo)
+    {
+        VerificarCena();
+    }
+
+    private void VerificarCena()
+    {
+        string cenaAtual = SceneManager.GetActiveScene().name;
+
+        if (cenaAtual == nomeCenaMenu ||
+            cenaAtual == nomeCenaGameOver)
+        {
+            EsconderTexto();
+        }
+        else
+        {
+            MostrarTexto();
         }
     }
 
@@ -40,7 +78,7 @@ public class LivesUI : MonoBehaviour
     {
         if (textoVidas != null)
         {
-            textoVidas.gameObject.SetActive(false);
+            textoVidas.enabled = false;
         }
     }
 
@@ -48,7 +86,15 @@ public class LivesUI : MonoBehaviour
     {
         if (textoVidas != null)
         {
-            textoVidas.gameObject.SetActive(true);
+            textoVidas.enabled = true;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
         }
     }
 }
