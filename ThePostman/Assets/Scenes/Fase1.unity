@@ -2285,8 +2285,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7f319a99a888d544a8ed6b54d4c09d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  vida: 3
-  vidaMaxima: 3
+  vida: 6
+  vidaMaxima: 6
   tempoInvencibilidade: 1.5
   intervaloPiscar: 0.1
   forcaKnockback: 6

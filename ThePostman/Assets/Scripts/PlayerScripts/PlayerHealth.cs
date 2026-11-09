@@ -4,8 +4,8 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Vida")]
-    public int vida = 3;
-    public int vidaMaxima = 3;
+    public int vida = 6;
+    public int vidaMaxima = 6;
 
     [Header("Invencibilidade")]
     public float tempoInvencibilidade = 1.5f;

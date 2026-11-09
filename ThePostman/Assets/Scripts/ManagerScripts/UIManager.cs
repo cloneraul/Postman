@@ -1,10 +1,11 @@
+
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    public static int vidaAtual = 3;
+    public static int vidaAtual = 6;
 
     private HeartsUI heartsUI;
 
