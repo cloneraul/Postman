@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 public class IceProjectile : MonoBehaviour
@@ -23,14 +24,17 @@ public class IceProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        EnemyPatrol enemyTerrestre =
-            other.GetComponent<EnemyPatrol>();
+        MonkeyEnemy macaco = other.GetComponentInParent<MonkeyEnemy>();
 
-        if (enemyTerrestre == null)
+        if (macaco != null)
         {
-            enemyTerrestre =
-                other.GetComponentInParent<EnemyPatrol>();
+            macaco.Freeze(tempoCongelado);
+            Destroy(gameObject);
+            return;
         }
+
+        EnemyPatrol enemyTerrestre =
+            other.GetComponentInParent<EnemyPatrol>();
 
         if (enemyTerrestre != null)
         {
@@ -40,13 +44,7 @@ public class IceProjectile : MonoBehaviour
         }
 
         FlyingEnemy enemyVoador =
-            other.GetComponent<FlyingEnemy>();
-
-        if (enemyVoador == null)
-        {
-            enemyVoador =
-                other.GetComponentInParent<FlyingEnemy>();
-        }
+            other.GetComponentInParent<FlyingEnemy>();
 
         if (enemyVoador != null)
         {
@@ -56,13 +54,7 @@ public class IceProjectile : MonoBehaviour
         }
 
         SandwormBoss boss =
-            other.GetComponent<SandwormBoss>();
-
-        if (boss == null)
-        {
-            boss =
-                other.GetComponentInParent<SandwormBoss>();
-        }
+            other.GetComponentInParent<SandwormBoss>();
 
         if (boss != null)
         {
